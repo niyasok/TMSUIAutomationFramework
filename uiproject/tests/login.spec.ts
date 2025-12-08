@@ -6,6 +6,8 @@ test.describe("TMS ATG Order Creation Functionality", () => {
     customerPage,
     productPage,
     checkoutPage,
+    productEans, // NEW
+    excelWriter,
   }) => {
     await loginPage.login("validUser");
     await expect(await loginPage.validateStoreCodePage()).toBeVisible();
@@ -16,48 +18,13 @@ test.describe("TMS ATG Order Creation Functionality", () => {
     await customerPage.findCustomer("1003066575");
     await expect(await customerPage.customerDetailPage()).toBeVisible();
 
-    await productPage.addProductByEAN("03276167", "1");
+    // Loop through all product EANs and add each product (quantity "1")
+    for (const ean of productEans) {
+      await productPage.addProductByEAN(ean, "1");
+      const orderId = await checkoutPage.proceedToCheckout("000"); // CVC code
 
-    await checkoutPage.proceedToCheckout("000"); // CVC code
+      excelWriter.addMapping(ean, orderId);
+      console.log(`Product EAN: ${ean}, Order ID: ${orderId}`);
+    }
   });
-
-  // test("locked out user cannot login", async ({loginPage}) => {
-  //   await loginPage.login( "lockedOutUser");
-  //   expect(loginPage.expectErrorMessage,"Epic sadface: Sorry, this user has been locked out.") ;
-  // });
-
-  // test("invalid credentials show error message", async ({loginPage}) => {
-  //   await loginPage.login("invalidUser");
-  //   expect  (loginPage.expectErrorMessage,
-  //     "Epic sadface: Username and password do not match any user in this service",
-  //   );
-  // });
-
-  // test("empty credentials validation", async ({loginPage}) => {
-  //   await loginPage.clickLoginButton();
-  //   expect (loginPage.expectErrorMessage,"Epic sadface: Username is required");
-  // });
-
-  // test("empty password validation", async ({loginPage}) => {
-  //   await loginPage.enterUsername("validUser");
-  //   await loginPage.clickLoginButton();
-  //   expect (loginPage.expectErrorMessage,"Epic sadface: Password is required");
-  // });
-
-  // test("problem user can login", async ({loginPage}) => {
-  //   await loginPage.login("problemUser");
-  //   expect (loginPage.validatePageTitle,"Products");
-  // });
-
-  // test("performance glitch user login timing", async ({ loginPage }) => {
-  //   const startTime = Date.now();
-  //   await loginPage.login("performanceGlitchUser");
-  //   expect(loginPage.validatePageTitle, "Products");
-  //   const endTime = Date.now();
-  //   const loginTime = endTime - startTime;
-
-  //   // Performance glitch user should take longer than 2 seconds but less than 10 seconds
-  //   expect(loginTime).toBeGreaterThan(2000);
-  //   expect(loginTime).toBeLessThan(10000);
-  // });
 });
