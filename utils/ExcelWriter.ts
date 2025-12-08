@@ -37,7 +37,7 @@ export class ExcelWriter {
       this.data = [];
       console.log(`✓ Cleared existing Excel file at: ${this.filePath}`);
     } catch (error) {
-      console.warn(`⚠️ Could not clear Excel file: ${error}`);
+      console.warn(`Could not clear Excel file: ${error}`);
     }
   }
 

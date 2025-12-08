@@ -27,9 +27,6 @@ test.describe("TMS ATG Order Creation Functionality", () => {
       console.log(`Product EAN: ${ean}, Order ID: ${orderId}`);
     }
   });
-<<<<<<< HEAD
 
  
-=======
->>>>>>> 58e75b039c3ef5e74898cb8e8fc7c52fd4c0c5b6
 });
