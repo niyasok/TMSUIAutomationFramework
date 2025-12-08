@@ -1,6 +1,7 @@
 import { test as pom } from "./pom";
-import { test as auth } from "./auth";
-import { mergeTests } from "playwright/test";
+// import { test as auth } from "./auth";
+// import { mergeTests } from "playwright/test";
 
-export const test = mergeTests(pom, auth);
+// export const test = mergeTests(pom, auth);
+export const test = pom;
 export const expect = test.expect;

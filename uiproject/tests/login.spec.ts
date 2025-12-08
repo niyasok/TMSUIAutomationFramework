@@ -6,6 +6,8 @@ test.describe("TMS ATG Order Creation Functionality", () => {
     customerPage,
     productPage,
     checkoutPage,
+    productEans, // NEW
+    excelWriter,
   }) => {
     await loginPage.login("validUser");
     await expect(await loginPage.validateStoreCodePage()).toBeVisible();
@@ -16,10 +18,18 @@ test.describe("TMS ATG Order Creation Functionality", () => {
     await customerPage.findCustomer("1003066575");
     await expect(await customerPage.customerDetailPage()).toBeVisible();
 
-    await productPage.addProductByEAN("03276167", "1");
+    // Loop through all product EANs and add each product (quantity "1")
+    for (const ean of productEans) {
+      await productPage.addProductByEAN(ean, "1");
+      const orderId = await checkoutPage.proceedToCheckout("000"); // CVC code
 
-    await checkoutPage.proceedToCheckout("000"); // CVC code
+      excelWriter.addMapping(ean, orderId);
+      console.log(`Product EAN: ${ean}, Order ID: ${orderId}`);
+    }
   });
+<<<<<<< HEAD
 
  
+=======
+>>>>>>> 58e75b039c3ef5e74898cb8e8fc7c52fd4c0c5b6
 });

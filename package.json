@@ -11,11 +11,15 @@
   "devDependencies": {
     "@playwright/test": "^1.57.0",
     "@types/node": "^24.10.1",
+    "@types/xlsx": "^0.0.35",
     "allure-playwright": "^3.4.2"
   },
   "dependencies": {
+<<<<<<< HEAD
     "csv-parse": "^6.1.0",
     "exceljs": "^4.4.0",
+=======
+>>>>>>> 58e75b039c3ef5e74898cb8e8fc7c52fd4c0c5b6
     "xlsx": "^0.18.5"
   }
 }

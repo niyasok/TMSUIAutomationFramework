@@ -2,21 +2,5 @@
   "validUser": {
     "username": "service",
     "password": "Service123"
-  },
-  "lockedOutUser": {
-    "username": "locked_out_user",
-    "password": "secret_sauce"
-  },
-  "problemUser": {
-    "username": "problem_user",
-    "password": "secret_sauce"
-  },
-  "performanceGlitchUser": {
-    "username": "performance_glitch_user",
-    "password": "secret_sauce"
-  },
-  "invalidUser": {
-    "username": "invalid_user",
-    "password": "wrong_password"
   }
 }

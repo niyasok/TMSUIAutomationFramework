@@ -1,10 +1,13 @@
 import { Page, test as baseTest, expect } from "@playwright/test";
 import { LoginPage } from "../pages/LoginPage";
 import { InventoryPage } from "../pages/InventoryPage";
-import { AuthFixtures } from "./auth";
 import { CustomerPage } from "uiproject/pages/CustomerPage";
 import { ProductPage } from "uiproject/pages/ProductPage";
 import { CheckoutPage } from "uiproject/pages/CheckoutPage";
+import { ExcelWriter } from "../../utils/ExcelWriter";
+
+// import JSON data (tsconfig.json already has resolveJsonModule: true)
+import productEansData from "../test-data/qa/products.json";
 
 export interface PomFixtures {
   loginPage: LoginPage;
@@ -12,7 +15,8 @@ export interface PomFixtures {
   customerPage: CustomerPage;
   productPage: ProductPage;
   checkoutPage: CheckoutPage;
-  authenticatedPage: AuthFixtures["authenticatedPage"];
+  productEans: string[];
+  excelWriter: ExcelWriter;
 }
 
 export const test = baseTest.extend<PomFixtures>({
@@ -20,11 +24,6 @@ export const test = baseTest.extend<PomFixtures>({
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await use(loginPage);
-  },
-
-  inventoryPage: async ({ authenticatedPage }, use) => {
-    const inventoryPage = new InventoryPage(authenticatedPage);
-    await use(inventoryPage);
   },
 
   customerPage: async ({ page }, use) => {
@@ -40,5 +39,31 @@ export const test = baseTest.extend<PomFixtures>({
   checkoutPage: async ({ page }, use) => {
     const checkoutPage = new CheckoutPage(page);
     await use(checkoutPage);
+  },
+
+  // NEW fixture to provide the array of EANs to tests
+  productEans: async ({}, use) => {
+    await use(productEansData as string[]);
+  },
+
+  // excelWriter: async ({}, use) => {
+  //   const excelWriter = new ExcelWriter();
+  //   await use(excelWriter);
+  //   // Write to file after test completes
+  //   await excelWriter.write();
+  // },
+  excelWriter: async ({}, use) => {
+    const excelWriter = new ExcelWriter();
+    // Clear previous run data before the test(s) start
+    try {
+      excelWriter.clearFile();
+    } catch (e) {
+      console.warn("Could not clear excel file before run:", e);
+    }
+
+    await use(excelWriter);
+
+    // After test completes, write collected mappings
+    await excelWriter.write();
   },
 });
