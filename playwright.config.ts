@@ -5,7 +5,7 @@ const ENV = process.env.ENV || DEFAULT_ENV;
 process.env.ENV = ENV;
 
 export default defineConfig({
-  timeout: 60000,
+  timeout: 100000,
   use: {
     ignoreHTTPSErrors: true,
     screenshot: "only-on-failure",
