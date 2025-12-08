@@ -46,10 +46,24 @@ export const test = baseTest.extend<PomFixtures>({
     await use(productEansData as string[]);
   },
 
+  // excelWriter: async ({}, use) => {
+  //   const excelWriter = new ExcelWriter();
+  //   await use(excelWriter);
+  //   // Write to file after test completes
+  //   await excelWriter.write();
+  // },
   excelWriter: async ({}, use) => {
     const excelWriter = new ExcelWriter();
+    // Clear previous run data before the test(s) start
+    try {
+      excelWriter.clearFile();
+    } catch (e) {
+      console.warn("Could not clear excel file before run:", e);
+    }
+
     await use(excelWriter);
-    // Write to file after test completes
+
+    // After test completes, write collected mappings
     await excelWriter.write();
   },
 });

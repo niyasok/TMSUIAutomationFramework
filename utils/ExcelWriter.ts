@@ -19,36 +19,45 @@ export class ExcelWriter {
     this.filePath = path.join(outputDir, fileName);
   }
 
-  /**
-   * Add an EAN and Order ID pair to the mapping
-   */
   addMapping(ean: string, orderId: string): void {
     this.data.push({ ean, orderId });
   }
 
   /**
-   * Write all collected mappings to Excel file (.xlsx)
+   * Overwrite the target XLSX file with only the header row (clears prior data).
    */
+  clearFile(): void {
+    try {
+      const workbook = XLSX.utils.book_new();
+      // Create a sheet with just header row
+      const headerSheet = XLSX.utils.aoa_to_sheet([["EAN", "Order No"]]);
+      XLSX.utils.book_append_sheet(workbook, headerSheet, "EAN-Order Mapping");
+      XLSX.writeFile(workbook, this.filePath);
+      // Also clear in-memory buffer
+      this.data = [];
+      console.log(`✓ Cleared existing Excel file at: ${this.filePath}`);
+    } catch (error) {
+      console.warn(`⚠️ Could not clear Excel file: ${error}`);
+    }
+  }
+
   async write(): Promise<void> {
     try {
-      // Create a new workbook
       const workbook = XLSX.utils.book_new();
 
       // Convert data to sheet
-      const worksheet = XLSX.utils.json_to_sheet(this.data, {
-        header: ["EAN", "order No"],
+      // map object keys to the same column headers used for the sheet
+      const sheetData = this.data.map((d) => ({
+        EAN: d.ean,
+        "Order No": d.orderId,
+      }));
+      const worksheet = XLSX.utils.json_to_sheet(sheetData, {
+        header: ["EAN", "Order No"],
       });
 
-      // Set column widths for better readability
-      worksheet["!cols"] = [
-        { wch: 20 }, // EAN column width
-        { wch: 20 }, // Order ID column width
-      ];
+      worksheet["!cols"] = [{ wch: 20 }, { wch: 20 }];
 
-      // Add worksheet to workbook
       XLSX.utils.book_append_sheet(workbook, worksheet, "EAN-Order Mapping");
-
-      // Write file
       XLSX.writeFile(workbook, this.filePath);
       console.log(`✓ EAN-Order mapping written to: ${this.filePath}`);
     } catch (error) {
@@ -57,16 +66,10 @@ export class ExcelWriter {
     }
   }
 
-  /**
-   * Clear all collected data (useful for multiple test runs)
-   */
   clear(): void {
     this.data = [];
   }
 
-  /**
-   * Get the file path
-   */
   getFilePath(): string {
     return this.filePath;
   }
