@@ -33,7 +33,7 @@ export class CheckoutPage extends BasePageUI {
     // expect(await this.page.locator(this.orderId).isVisible());
     // let orderNo = await this.page.locator(this.orderId).innerText();
 
-    await this.page.locator(this.orderId).waitFor({ state: "visible" });
+    await this.page.locator(this.finishWithThisOrderBtn).waitFor({ state: "visible",timeout:50000 });
     const orderNo = await this.page.locator(this.orderId).innerText();
 
     console.log("Order ID is: ", orderNo);

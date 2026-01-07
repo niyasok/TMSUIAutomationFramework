@@ -51,17 +51,6 @@ export class OrderSummaryPage extends BasePageUI {
 
     // Overwrite each run
     fs.writeFileSync("order.json", JSON.stringify(data, null, 2));
-
-    // If you want to append instead of overwrite, uncomment:
-    /*
-    let existing: any[] = [];
-    if (fs.existsSync("order.json")) {
-      existing = JSON.parse(fs.readFileSync("order.json", "utf-8"));
-    }
-    existing.push(data);
-    fs.writeFileSync("order.json", JSON.stringify(existing, null, 2));
-    */
-
     await this.page.locator(this.finishWithThisOrderBtn).click();
     return orderNo;
   }
