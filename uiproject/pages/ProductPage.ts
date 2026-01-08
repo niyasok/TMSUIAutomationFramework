@@ -18,11 +18,6 @@ export class ProductPage extends BasePageUI {
 
   async addProductByEAN(eanNo: string, quantity: string) {
     await this.page.locator(this.productsNavBar).click();
-
-    // await this.page.waitForSelector(this.productsNavBar, {
-    //   state: "visible",
-    //   timeout: 30000, // 30 seconds
-    // });
     await this.page.locator(this.productsTab).click();
     await this.page.waitForSelector(this.eanNoInput, { state: "visible" });
 
