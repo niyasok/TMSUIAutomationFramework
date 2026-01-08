@@ -34,10 +34,8 @@ export class MultiProductPage extends BasePageUI {
       await this.page.fill(qtyInput, qty);
     }
 
-    // Click legend to trigger validation
     await this.page.locator(this.legend).click();
 
-    // Add all products to basket
     await this.page.locator(this.addToBasketBtn).click();
     await this.page.locator(this.proceedToBasketBtn).click();
   }

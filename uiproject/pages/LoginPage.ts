@@ -48,18 +48,13 @@ export class LoginPage extends BasePageUI {
 
   async validateStoreCodePage() {
     // await this.page.waitForLoadState("networkidle"); // waits until network is idle
-
     return this.page.locator(this.storeCodeInput);
-    // return await this.expectUrlContains("/confirmLocation.jsp");
-    // return this.page.locator(this.inventoryHeading);
   }
 
   async storeLocation(storeCode: string) {
     await this.page.fill(this.storeCodeInput, storeCode);
     await this.page.click(this.confirmLocationBtn);
     await this.page.click(this.continueBtn);
-
-    // return this.page.locator(this.inventoryHeading);
   }
 
   async validateHomePage() {

@@ -20,16 +20,9 @@ export class ExcelWriter {
     this.filePath = path.join(outputDir, fileName);
   }
 
-  /**
-   * Add an EAN and Order ID pair to the mapping
-   */
   addMapping(ean: string, orderId: string): void {
     this.data.push({ ean, orderId });
   }
-
-  /**
-   * Write all collected mappings to CSV file
-   */
   async write(): Promise<void> {
     try {
       const headers = "EAN,Order ID\n";
@@ -46,16 +39,11 @@ export class ExcelWriter {
     }
   }
 
-  /**
-   * Clear all collected data (useful for multiple test runs)
-   */
+  //Clear all collected data (useful for multiple test runs)
   clear(): void {
     this.data = [];
   }
 
-  /**
-   * Get the file path
-   */
   getFilePath(): string {
     return this.filePath;
   }

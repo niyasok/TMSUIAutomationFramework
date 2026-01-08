@@ -4,15 +4,7 @@ import fs from "fs";
 
 export class OrderSummaryPage extends BasePageUI {
   private readonly productsNavBar = ".js-search-product";
-  private readonly productsTab = "//a[@data-title='Products'][@role]";
-  private readonly eanNoInput = "#ean1";
-  private readonly eanQtyInput = '[name="ean1qty"]';
 
-  private readonly homeDelivery = '//input[@value="homeDelivery"]';
-  private readonly legend = "//legend";
-
-  private readonly addToBasketBtn = '[value="Add to basket"]';
-  private readonly proceedToBasketBtn = "#proceed-basket";
   private readonly proceedToCheckoutBtn = '[data-action="proceedToCheckout"]';
   private readonly creditcardCvcInput = "#cvc";
 
@@ -29,11 +21,6 @@ export class OrderSummaryPage extends BasePageUI {
   constructor(page: Page) {
     super(page);
   }
-
-  /**
-   * Proceed to checkout, place the order, and return the order ID.
-   * Also writes orderId + ean into order.json.
-   */
   async proceedToCheckout(cvcNo: string, eanUsed: string): Promise<string> {
     await this.page.locator(this.proceedToCheckoutBtn).first().click();
     await this.page.fill(this.creditcardCvcInput, cvcNo);
