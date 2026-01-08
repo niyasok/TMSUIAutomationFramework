@@ -9,6 +9,7 @@ export default defineConfig({
   use: {
     ignoreHTTPSErrors: true,
     screenshot: "only-on-failure",
+    trace: "on",
   },
   reporter: [["list"], ["allure-playwright"], ["html", { open: "never" }]],
 
